@@ -30,10 +30,10 @@ public:
 
     bool intersect(const Ray &r, Hit &h, float tmin) override {
 	int len = group.size();
-	bool result = true;
+	bool result = false;
         for (int i = 0; i < len; i += 1) {
                 bool temp = group[i]->intersect(r, h, tmin);
-		result = result & temp;
+		result = result | temp;
         }
 	return result;
     }
@@ -47,7 +47,7 @@ public:
     }
 
 private:
-	std::vector<Object*> group
+	std::vector<Object3D*> group;
 };
 
 #endif

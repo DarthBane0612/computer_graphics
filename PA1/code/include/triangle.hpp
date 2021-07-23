@@ -34,15 +34,23 @@ public:
 		Matrix3f m1 = Matrix3f(ray.getDirection(), E1, E2, false);
 		Matrix3f m3 = Matrix3f(ray.getDirection(), S, E2, false);
 		Matrix3f m4 = Matrix3f(ray.getDirection(), E1, S, false);
-		float t = (m2.determinant()) / (m1.determinant());
-		float beta = (m3.determinant()) / (m1.determinant());
-		float gama = (m4.determinant()) / (m1.determinant());
-		if (t > 0 && beta >= 0 && gama <= 1 && beta + gama <= 1 && t > tmin) {
-				if (hit.getT() > t) {
-					hit.set(t, material, normal);
-				}
+		//float t = (m2.determinant()) / (m1.determinant());
+		//float beta = (m3.determinant()) / (m1.determinant());
+		//float gama = (m4.determinant()) / (m1.determinant());
+		float x = m1.determinant();
+		float y = m2.determinant();
+		float z = m3.determinant();
+		float v = m4.determinant();
+		Vector3f temp = Vector3f(y, z, v);
+		temp = temp / x;
+		float t = temp.x();
+		float beta = temp.y();
+		float gamma = temp.z();
+		if (t > 0 && beta >= 0 && gamma <= 1 && beta + gamma <= 1 && t > tmin) {
+			if (hit.getT() > t) {
+				hit.set(t, material, normal);
+				return true;
 			}
-			return true;
 		}
         	return false;
 	}

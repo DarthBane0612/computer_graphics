@@ -1,0 +1,6 @@
+/home/ps/computer_graphics/PA1/code/build/CMakeFiles/rebuild_cache.dir
+/home/ps/computer_graphics/PA1/code/build/CMakeFiles/PA1.dir
+/home/ps/computer_graphics/PA1/code/build/CMakeFiles/edit_cache.dir
+/home/ps/computer_graphics/PA1/code/build/deps/vecmath/CMakeFiles/rebuild_cache.dir
+/home/ps/computer_graphics/PA1/code/build/deps/vecmath/CMakeFiles/vecmath.dir
+/home/ps/computer_graphics/PA1/code/build/deps/vecmath/CMakeFiles/edit_cache.dir

@@ -33,31 +33,32 @@ int main(int argc, char *argv[]) {
     // through that pixel and finding its intersection with
     // the scene.  Write the color at the intersection to that
     // pixel in your output image.
-    SceneParser sp = SceneParser(inputFile);
-    camera = sp.getCamera();
-    Image img = new Image(camera->getWidth(), camera->getheight());
+    
+    SceneParser sp = SceneParser(inputFile.c_str());
+    Camera* camera = sp.getCamera();
+    Image* img = new Image(camera->getWidth(), camera->getHeight());
     for (int x = 0; x < camera->getWidth(); x += 1) {
 	for (int y = 0; y < camera->getHeight(); y += 1) {
-		Ray camRay = sp.getCamera()->generateray(Vector2f(x, y));
+		Ray camRay = sp.getCamera()->generateRay(Vector2f(x, y));
 		Group* baseGroup = sp.getGroup();
 		Hit hit;
 		bool isIntersect = baseGroup->intersect(camRay, hit, 0);
-		if (isintersect) {
+		if (isIntersect) {
 			Vector3f finalColor = Vector3f::ZERO;
 			for (int li = 0; li < sp.getNumLights(); li += 1) {
 				Light* light = sp.getLight(li);
 				Vector3f L, lightColor;
 				light->getIllumination(camRay.pointAtParameter(hit.getT()), L, lightColor);
-				finialColor += hit.getMaterial()->Shade(camRay, hit, lightColor);
+				finalColor += hit.getMaterial()->Shade(camRay, hit, L, lightColor);
 			}
-			img.SetPixel(x, y, finalColor);
+			img->SetPixel(x, y, finalColor);
 		}
 		else {
-			img.SetPixel(x, y, sp.getBackgroundColor());
+			img->SetPixel(x, y, sp.getBackgroundColor());
 		}
 	}
     }
-    img.SaveImage(outputFile);
+    img->SaveBMP(outputFile.c_str());
     cout << "Hello! Computer Graphics!" << endl;
     return 0;
 }

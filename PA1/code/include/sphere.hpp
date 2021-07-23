@@ -25,7 +25,7 @@ public:
         //
 	Vector3f l = center - r.getOrigin();
 	float tp = Vector3f::dot(l, r.getDirection());
-	float dsquare = l.squaredLength() - pow(tp, 2);
+	float dsquare = l.squaredLength() - tp * tp;
 	if (dsquare < 0) {
 		return false;
 	}
@@ -46,11 +46,11 @@ public:
 		if (t >= tmin) {
 			if (h.getT() > t) {
 				h.set(t, material, normal);
+				return true;
 			}
-			return true;
 		}
 	}
-	else if (l.squaredlength() > radius * radius) {
+	else if (l.squaredLength() > radius * radius) {
 		if (tp < 0) {
 			return false; 
 		}
@@ -60,8 +60,8 @@ public:
 		if (t >= tmin) {
 			if (h.getT() > t) {
 				h.set(t, material, normal);
+				return true;
 			}
-			return true;
 		}
 	}
 	else {
@@ -71,8 +71,8 @@ public:
 		if (tmin <= 0) {
 			if (h.getT() > 0) {
 				h.set(t, material, normal);
+				return true;
 			}
-			return true;
 		}
 	}
         return false;
