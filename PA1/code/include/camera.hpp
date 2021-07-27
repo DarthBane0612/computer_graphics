@@ -38,6 +38,7 @@ protected:
     Matrix3f R;
     int cx, cy;
     float fx, fy;
+    float angle;
 };
 
 // TODO: Implement Perspective camera
@@ -48,17 +49,26 @@ public:
     PerspectiveCamera(const Vector3f &center, const Vector3f &direction,
             const Vector3f &up, int imgW, int imgH, float angle) : Camera(center, direction, up, imgW, imgH) {
         // angle is in radian.
-	R = Matrix3f(this->horizontal, -this->up, this->direction);
-	cx = float(width / 2);
-	cy = float(height / 2);
-	fx = (imgH / 2) / tan(angle / 2);
-	fy = imgH / 2;
+	R = Matrix3f(this->horizontal, -this->up, this->direction, true);
+	this->center = center;
+        this->direction = direction.normalized();
+        this->horizontal = Vector3f::cross(this->direction, up);
+                this->horizontal.normalize();
+        this->up = Vector3f::cross(this->horizontal, this->direction);
+        this->width = imgW;
+        this->height = imgH;
+	this->angle = angle;
+	
+	cx = float(imgW / 2);
+	cy = float(imgH / 2);
+	fx = cx / tan(angle / 2);
+	fy = cy / tan(angle / 2);
     }
 
     Ray generateRay(const Vector2f &point) override {
         Vector3f A = Vector3f((point.x() - width / 2) / fx, (height / 2 - point.y()) / fy, 1);
 	Vector3f B = A.normalized();
-	Ray ray = Ray(center + horizontal-up, R * B);
+	Ray ray = Ray(center, R * B);
 	return ray;
     }
 };

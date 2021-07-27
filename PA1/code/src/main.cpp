@@ -58,8 +58,11 @@ int main(int argc, char *argv[]) {
 		}
 	}
     }
+
+
     img->SaveBMP(outputFile.c_str());
     cout << "Hello! Computer Graphics!" << endl;
+
     return 0;
 }
 

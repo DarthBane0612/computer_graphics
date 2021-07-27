@@ -45,7 +45,9 @@ public:
 		temp = temp / x;
 		float t = temp.x();
 		float beta = temp.y();
+
 		float gamma = temp.z();
+		//normal = Vector3f::cross(b - a, c - a).normalized();
 		if (t > 0 && beta >= 0 && gamma <= 1 && beta + gamma <= 1 && t > tmin) {
 			if (hit.getT() > t) {
 				hit.set(t, material, normal);

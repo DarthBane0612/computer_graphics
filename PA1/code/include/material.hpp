@@ -29,7 +29,6 @@ public:
         Vector3f shaded = Vector3f::ZERO;
 	diffuseColor = Vector3f::dot(dirToLight, hit.getNormal());
 	Vector3f Ri1 = 2 * (Vector3f::dot(hit.getNormal(), dirToLight));
-	//Vector3f Ri2 = Vector3f::dot(Ri1, hit.getNormal());
 	Vector3f Ri2 = Ri1 * hit.getNormal();
 	Vector3f Ri = Ri2 - dirToLight;
 	specularColor = Vector3f::dot(-ray.getDirection(), Ri);
@@ -39,6 +38,7 @@ public:
 	float x = pow(specularColor.x(), shininess);
 	float y = pow(specularColor.y(), shininess);
 	float z = pow(specularColor.z(), shininess);
+	
 	Vector3f newspecular = Vector3f(x, y, z);
 	if (specularColor < 0) {
                 specularColor = 0;

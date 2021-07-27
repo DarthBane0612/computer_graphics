@@ -39,6 +39,7 @@ public:
     }
 
     void addObject(int index, Object3D *obj) {
+	//group.insert(group.begin() + index, obj);
 	group[index] = obj;
     }
 
