@@ -35,10 +35,11 @@ int main(int argc, char *argv[]) {
     // pixel in your output image.
     
     SceneParser sp = SceneParser(inputFile.c_str());
+    
     Camera* camera = sp.getCamera();
     Image* img = new Image(camera->getWidth(), camera->getHeight());
-    for (int x = 0; x < camera->getWidth(); x += 1) {
-	for (int y = 0; y < camera->getHeight(); y += 1) {
+    for (int x = 0; x < camera->getWidth(); ++x) {
+	for (int y = 0; y < camera->getHeight(); ++y) {
 		Ray camRay = sp.getCamera()->generateRay(Vector2f(x, y));
 		Group* baseGroup = sp.getGroup();
 		Hit hit;
@@ -60,8 +61,9 @@ int main(int argc, char *argv[]) {
     }
 
 
-    img->SaveBMP(outputFile.c_str());
+    
     cout << "Hello! Computer Graphics!" << endl;
+    img->SaveBMP(outputFile.c_str());
 
     return 0;
 }

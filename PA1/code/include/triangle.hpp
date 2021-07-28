@@ -21,8 +21,8 @@ public:
 		this->normal = Vector3f::cross(b - a, c - a).normalized();
 		this->material = m;
 		vertices[0] = a;
-		vertices[1] = b;
-		vertices[2] = c;
+                vertices[1] = b;
+                vertices[2] = c;
 	}
 
 	bool intersect( const Ray& ray,  Hit& hit , float tmin) override {
@@ -33,10 +33,7 @@ public:
 		Matrix3f m2 = Matrix3f(S, E1, E2, false);
 		Matrix3f m1 = Matrix3f(ray.getDirection(), E1, E2, false);
 		Matrix3f m3 = Matrix3f(ray.getDirection(), S, E2, false);
-		Matrix3f m4 = Matrix3f(ray.getDirection(), E1, S, false);
-		//float t = (m2.determinant()) / (m1.determinant());
-		//float beta = (m3.determinant()) / (m1.determinant());
-		//float gama = (m4.determinant()) / (m1.determinant());
+		Matrix3f m4 = Matrix3f(ray.getDirection(), E1, S, false);;
 		float x = m1.determinant();
 		float y = m2.determinant();
 		float z = m3.determinant();
@@ -44,17 +41,14 @@ public:
 		Vector3f temp = Vector3f(y, z, v);
 		temp = temp / x;
 		float t = temp.x();
-		float beta = temp.y();
-
-		float gamma = temp.z();
-		//normal = Vector3f::cross(b - a, c - a).normalized();
-		if (t > 0 && beta >= 0 && gamma <= 1 && beta + gamma <= 1 && t > tmin) {
-			if (hit.getT() > t) {
+		if (t >= tmin && t <= hit.getT()) {
+			Vector3f p = ray.pointAtParameter(t);
+			if (Vector3f::dot(Vector3f::cross((vertices[1]-p), (vertices[2]-p)), normal) >= 0 && Vector3f::dot(Vector3f::cross((vertices[2]-p), (vertices[0]-p)), normal) >= 0 && Vector3f::dot(Vector3f::cross((vertices[0]-p), (vertices[1]-p)), normal) >= 0) {
 				hit.set(t, material, normal);
 				return true;
 			}
-		}
-        	return false;
+      		}
+		return false;
 	}
 	Vector3f normal;
 	Vector3f vertices[3];

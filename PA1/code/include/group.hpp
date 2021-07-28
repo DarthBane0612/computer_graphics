@@ -22,10 +22,10 @@ public:
     }
 
     ~Group() override {
-	int len = group.size();
-	for (int i = 0; i < len; i += 1) {
-		delete group[i];
-	}
+	//int len = group.size();
+	//for (int i = 0; i < len; i += 1) {
+	//	delete group[i];
+	//}
     }
 
     bool intersect(const Ray &r, Hit &h, float tmin) override {
@@ -39,7 +39,6 @@ public:
     }
 
     void addObject(int index, Object3D *obj) {
-	//group.insert(group.begin() + index, obj);
 	group[index] = obj;
     }
 

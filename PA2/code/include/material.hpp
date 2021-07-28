@@ -28,7 +28,23 @@ public:
     Vector3f Shade(const Ray &ray, const Hit &hit,
                    const Vector3f &dirToLight, const Vector3f &lightColor) {
         Vector3f shaded = Vector3f::ZERO;
-        // 
+        diffuseColor = Vector3f::dot(dirToLight.normalized(), hit.getNormal());
+        Vector3f Ri1 = 2 * (Vector3f::dot(hit.getNormal(), dirToLight.normalized()));
+        Vector3f Ri2 = Ri1 * hit.getNormal();
+        Vector3f Ri = Ri2 - dirToLight.normalized();
+        specularColor = Vector3f::dot(-ray.getDirection().normalized(), Ri);
+        if (diffuseColor < 0) {
+                diffuseColor = 0;
+        }
+        float x = pow(specularColor.x(), shininess);
+        float y = pow(specularColor.y(), shininess);
+        float z = pow(specularColor.z(), shininess);
+
+        Vector3f newspecular = Vector3f(x, y, z);
+        if (specularColor < 0) {
+                specularColor = 0;
+        }
+        shaded = lightColor * (diffuseColor + newspecular); 
         return shaded;
     }
 

@@ -16,7 +16,7 @@ public:
     Sphere(const Vector3f &center, float radius, Material *material) : Object3D(material) {
 	this->center = center;
 	this->radius = radius;
-	//this->material = material;
+	this->material = material;
     }
 
     ~Sphere() override = default;
@@ -44,7 +44,7 @@ public:
 		Vector3f point = r.pointAtParameter(t);
 		Vector3f normal = (point - center).normalized();
 		if (t >= tmin) {
-			if (h.getT() > t) {
+			if (h.getT() >= t) {
 				h.set(t, material, normal);
 				return true;
 			}
@@ -58,7 +58,7 @@ public:
 		Vector3f point = r.pointAtParameter(t);
                 Vector3f normal = (point - center).normalized();
 		if (t >= tmin) {
-			if (h.getT() > t) {
+			if (h.getT() >= t) {
 				h.set(t, material, normal);
 				return true;
 			}
@@ -81,7 +81,7 @@ public:
 protected:
 	Vector3f center;
 	float radius;
-	//Material* material;
+	Material* material;
 };
 
 
