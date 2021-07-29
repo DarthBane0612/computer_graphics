@@ -64,15 +64,22 @@ public:
             printf("Number of control points of BezierCurve must be 3n+1!\n");
             exit(0);
         }
+
+	n 
     }
 
     void discretize(int resolution, std::vector<CurvePoint>& data) override {
         data.clear();
         // TODO (PA3): fill in data vector
+	
+	
     }
 
 protected:
-
+    int n;
+    int k;
+    std::vector<double> t;
+    std::vector<double> tpad;
 };
 
 class BsplineCurve : public Curve {

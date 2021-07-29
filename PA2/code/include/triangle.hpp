@@ -49,6 +49,7 @@ public:
                                 hit.set(t, material, normal);
                                 return true;
                         }
+		}
         	return false;
 	}
 	Vector3f normal;

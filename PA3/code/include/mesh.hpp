@@ -29,6 +29,12 @@ public:
 
     void drawGL() override {
         // TODO (PA2): Call drawGL for each individual triangle.
+	for (int index = 0; index < t.size(); index += 1) {
+                TriangleIndex &triindex = t[index];
+                Triangle triangle(v[triindex[0]], v[triindex[1]], triindex[2]], material);
+                triangle.normal = n[index];
+                triangle.drawGL();
+        }
     }
 
 private:
