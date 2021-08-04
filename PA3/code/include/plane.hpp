@@ -21,13 +21,13 @@ public:
     ~Plane() override = default;
 
     bool intersect(const Ray &r, Hit &h, float tmin) override {
-	if (Vector3f::dot(n, r.getDirection()) == 0) {
+	if (Vector3f::dot(norm, r.getDirection()) == 0) {
                 return false;
         }
-        float t = -(-d + Vector3f::dot(n, r.getOrigin()))/(Vector3f::dot(n, r.getDirection()));
+        float t = -(-d + Vector3f::dot(norm, r.getOrigin()))/(Vector3f::dot(norm, r.getDirection()));
         if (t > 0 && t >= tmin) {
                 if (h.getT() > t) {
-                        h.set(t, material, n);
+                        h.set(t, material, norm);
                         return true;
                 }
         }

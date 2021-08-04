@@ -93,7 +93,7 @@ void drawScene() {
 
     // TODO (PA2): Turn On all lights.
     for (int i = 0; i < sceneParser->getNumLights(); i += 1) {
-            sceneParser->getLights(i)->turnOn(i);
+            sceneParser->getLight(i)->turnOn(i);
     }
     
     // TODO (PA2): Draw elements.
