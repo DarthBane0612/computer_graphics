@@ -67,10 +67,12 @@ class Discriminator(nn.Module):
                                    nn.Dropout(0.4), 
                                    nn.LeakyReLU(0.2), 
                                    # TODO: 添加最后一个线性层，最终输出为一个实数
+                                   nn.linear(512, 1)
                                    )
 
     def execute(self, img, labels):
         d_in = jt.contrib.concat((img.view((img.shape[0], (- 1))), self.label_embedding(labels)), dim=1)
+        return self.model(d_in);
         # TODO: 将d_in输入到模型中并返回计算结果
 
 # 损失函数：平方误差
@@ -167,10 +169,10 @@ for epoch in range(opt.n_epochs):
         # ---------------------
 
         validity_real = discriminator(real_imgs, labels)
-        d_real_loss = adversarial_loss("""TODO: 计算真实类别的损失函数""")
+        d_real_loss = adversarial_loss(validity, valid)
 
         validity_fake = discriminator(gen_imgs.stop_grad(), gen_labels)
-        d_fake_loss = adversarial_loss("""TODO: 计算虚假类别的损失函数""")
+        d_fake_loss = adversarial_loss(validity, fake)
 
         # 总的判别器损失
         d_loss = (d_real_loss + d_fake_loss) / 2
@@ -195,7 +197,7 @@ discriminator.eval()
 generator.load('generator_last.pkl')
 discriminator.load('discriminator_last.pkl')
 
-number = #TODO: 写入你的学号（字符串类型）
+number = "2021008006"
 n_row = len(number)
 z = jt.array(np.random.normal(0, 1, (n_row, opt.latent_dim))).float32().stop_grad()
 labels = jt.array(np.array([int(number[num]) for num in range(n_row)])).float32().stop_grad()
