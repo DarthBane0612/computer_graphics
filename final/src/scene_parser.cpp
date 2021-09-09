@@ -180,6 +180,52 @@ void SceneParser::parseLights() {
     assert (!strcmp(token, "}"));
 }
 
+void Scene::parseDiskLights() {
+    char token[MAX_PARSER_TOKEN_LENGTH];
+    getToken(token);
+    assert(!strcmp(token, "{"));
+    // read in the number of objects
+    getToken(token);
+    assert(!strcmp(token, "numDiskLights"));
+    num_diskLights = readInt();
+    diskLights = new DiskLight *[num_diskLights];
+    // read in the objects
+    int count = 0;
+    while (num_diskLights > count) {
+        getToken(token);
+        if (strcmp(token, "DiskLight") == 0) {
+            diskLights[count] = parseDiskLight();
+        } else {
+            printf("Unknown token in parseLight: '%s'\n", token);
+            exit(0);
+        }
+        count++;
+    }
+    getToken(token);
+    assert(!strcmp(token, "}"));
+}
+
+DiskLight *Scene::parseDiskLight() {
+    char token[MAX_PARSER_TOKEN_LENGTH];
+    getToken(token);
+    assert(!strcmp(token, "{"));
+    getToken(token);
+    assert(!strcmp(token, "position"));
+    Vector3f position = readVector3f();
+    getToken(token);
+    assert(!strcmp(token, "direction"));
+    Vector3f direction = readVector3f();
+    getToken(token);
+    assert(!strcmp(token, "color"));
+    Vector3f color = readVector3f();
+    getToken(token);
+    assert(!strcmp(token, "radius"));
+    float radius = readFloat();
+    getToken(token);
+    assert(!strcmp(token, "}"));
+    return new DiskLight(position, direction, color, radius);
+}
+
 Light *SceneParser::parseDirectionalLight() {
     char token[MAX_PARSER_TOKEN_LENGTH];
     getToken(token);
@@ -248,7 +294,6 @@ Material *SceneParser::parseMaterial() {
     getToken(token);
     assert (!strcmp(token, "{"));
     while (true) {
-        getToken(token);
         if (strcmp(token, "diffuseColor") == 0) {
             diffuseColor = readVector3f();
         } else if (strcmp(token, "specularColor") == 0) {
@@ -258,7 +303,16 @@ Material *SceneParser::parseMaterial() {
         } else if (strcmp(token, "texture") == 0) {
             // Optional: read in texture and draw it.
             getToken(filename);
-        } else {
+        } 
+	else if (strcmp(token, "bump") == 0) {
+            getToken(bumpFile);
+        } else if (strcmp(token, "type") == 0) {
+            type = readVector3f();
+            type = type / (type.x() + type.y() + type.z());
+        } else if (strcmp(token, "emission") == 0) {
+            emission = readVector3f();
+        }
+	else {
             assert (!strcmp(token, "}"));
             break;
         }
@@ -412,6 +466,53 @@ Mesh *SceneParser::parseTriangleMesh() {
     return answer;
 }
 
+Curve *Scene::parseBezierCurve() {
+    char token[MAX_PARSER_TOKEN_LENGTH];
+    getToken(token);
+    assert(!strcmp(token, "{"));
+    getToken(token);
+    assert(!strcmp(token, "controls"));
+    vector<Vector3f> controls;
+    while (true) {
+        getToken(token);
+        if (!strcmp(token, "[")) {
+            controls.push_back(readVector3f());
+            getToken(token);
+            assert(!strcmp(token, "]"));
+        } else if (!strcmp(token, "}")) {
+            break;
+        } else {
+            printf("Incorrect format for BezierCurve!\n");
+            exit(0);
+        }
+    }
+    Curve *answer = new BezierCurve(controls);
+    return answer;
+}
+
+Curve *Scene::parseBsplineCurve() {
+    char token[MAX_PARSER_TOKEN_LENGTH];
+    getToken(token);
+    assert(!strcmp(token, "{"));
+    getToken(token);
+    assert(!strcmp(token, "controls"));
+    vector<Vector3f> controls;
+    while (true) {
+        getToken(token);
+        if (!strcmp(token, "[")) {
+            controls.push_back(readVector3f());
+            getToken(token);
+            assert(!strcmp(token, "]"));
+        } else if (!strcmp(token, "}")) {
+            break;
+        } else {
+            printf("Incorrect format for BsplineCurve!\n");
+            exit(0);
+        }
+    }
+    Curve *answer = new BsplineCurve(controls);
+    return answer;
+}
 
 Transform *SceneParser::parseTransform() {
     char token[MAX_PARSER_TOKEN_LENGTH];

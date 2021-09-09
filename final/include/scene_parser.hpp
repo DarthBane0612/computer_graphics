@@ -14,6 +14,8 @@ class Plane;
 class Triangle;
 class Transform;
 class Mesh;
+class Curve;
+class DiskLight;
 
 #define MAX_PARSER_TOKEN_LENGTH 1024
 
@@ -61,6 +63,7 @@ private:
     void parsePerspectiveCamera();
     void parseBackground();
     void parseLights();
+    void parseDiskLights();
     Light *parsePointLight();
     Light *parseDirectionalLight();
     void parseMaterials();
@@ -72,6 +75,9 @@ private:
     Triangle *parseTriangle();
     Mesh *parseTriangleMesh();
     Transform *parseTransform();
+    Curve *parseBezierCurve();
+    Curve *parseBsplineCurve();
+    
 
     int getToken(char token[MAX_PARSER_TOKEN_LENGTH]);
 
@@ -84,11 +90,14 @@ private:
     Camera *camera;
     Vector3f background_color;
     int num_lights;
+    int num_diskLights;
+    DiskLight **diskLights;
     Light **lights;
     int num_materials;
     Material **materials;
     Material *current_material;
     Group *group;
+    std::vector<Object3D *> objs;
 };
 
 #endif // SCENE_PARSER_H

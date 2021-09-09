@@ -1,35 +1,33 @@
 #ifndef OBJECT3D_H
 #define OBJECT3D_H
 
-#include "ray.hpp"
+#include <vector>
+
+
 #include "hit.hpp"
 #include "material.hpp"
-#include<glut.h>
+#include "ray.hpp"
 
-// Base class for all 3d entities.
+
+using std::vector;
 class Object3D {
-public:
+   public:
     Object3D() : material(nullptr) {}
 
     virtual ~Object3D() = default;
 
-    explicit Object3D(Material *material) {
-        this->material = material;
+    explicit Object3D(Material *material) { this->material = material; }
+
+    
+    virtual bool intersect(const Ray &r, Hit &h) = 0;
+    virtual vector<Object3D *> getFaces() { return {this}; }
+    virtual Vector3f min() const { return Vector3f(); }
+    virtual Vector3f max() const { return Vector3f(); }
+    virtual Vector3f center() const { return Vector3f(); }
+    virtual Ray randomRay(int axis = -1, long long int seed=0) const {
+        return Ray(Vector3f::ZERO, Vector3f::ZERO);
     }
-
-    // PA1: Intersect Ray with this object. If hit, store information in hit structure.
-    // This will not be used in PA2.
-    virtual bool intersect(const Ray &r, Hit &h, float tmin) = 0;
-
-    // PA2: draw using OpenGL pipeline.
-    virtual void drawGL() {
-        if (material) material->Use();
-    }
-
-protected:
-
     Material *material;
 };
 
 #endif
-

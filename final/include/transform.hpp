@@ -20,6 +20,9 @@ public:
 
     Transform(const Matrix4f &m, Object3D *obj) : o(obj) {
         transform = m.inverse();
+        bounds[0] = transformPoint(m, o->min());
+        bounds[1] = transformPoint(m, o->max());
+        bounds[2] = transformPoint(m, o->center());
     }
 
     ~Transform() {
@@ -36,17 +39,16 @@ public:
         return inter;
     }
 
-    void drawGL() override {
-        Object3D::drawGL();
-        glMatrixMode(GL_MODELVIEW); glPushMatrix();
-        glMultMatrixf(transform.inverse());
-        o->drawGL();
-        glPopMatrix();
-    }
+    Vector3f min() const override { return bounds[0]; }
+    Vector3f max() const override { return bounds[1]; }
+    Vector3f center() const override { return bounds[2]; }
+    vector<Object3D *> getFaces() override { return {(Object3D *)this}; }
+
 
 protected:
     Object3D *o; //un-transformed object
     Matrix4f transform;
+    Vector3f bounds[3];
 };
 
 #endif //TRANSFORM_H

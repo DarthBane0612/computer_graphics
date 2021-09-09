@@ -24,8 +24,5 @@ cd ..
 mkdir -p output
 bin/final testcases/scene01_basic.txt output/scene01.bmp
 bin/final testcases/scene02_cube.txt output/scene02.bmp
-bin/final testcases/scene03_sphere.txt output/scene03.bmp
-bin/final testcases/scene04_axes.txt output/scene04.bmp
 bin/final testcases/scene05_bunny_200.txt output/scene05.bmp
 bin/final testcases/scene06_bunny_1k.txt output/scene06.bmp
-bin/final testcases/scene07_shine.txt output/scene07.bmp
