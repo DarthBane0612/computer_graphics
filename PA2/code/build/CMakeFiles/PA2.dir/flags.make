@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/ps/computer_graphics/PA2/code/include -I/usr/include/GL -I/home/ps/computer_graphics/PA2/code/deps/vecmath/include
+CXX_INCLUDES = -I/home/ps/computer_graphics/PA2/code/include -I/usr/include/GL -I"/home/ps/computer_graphics/PA2/code/\$$" -I/home/ps/computer_graphics/PA2/code/{GLUT_INCLUDE_SUBDIR} -I/home/ps/computer_graphics/PA2/code/deps/vecmath/include
 
 CXX_FLAGS = -g -O3 -Wno-deprecated-declarations -O3 -DNDEBUG -std=gnu++11
 
